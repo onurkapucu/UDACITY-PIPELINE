@@ -12,6 +12,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import classification_report
 import pickle
 
 def load_data(database_filepath):
@@ -20,7 +21,7 @@ def load_data(database_filepath):
     df = pd.read_sql_table('DF', engine)
     X = df['message']
     Y = df.drop(columns=['id','message','original','genre'])
-    column_names=list(Y)
+    category_names=list(Y)
     return X, Y, category_names
 
 
@@ -47,8 +48,9 @@ def build_model():
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
+    Y_Pred = model.predict(X_test)
     for i in range(len(category_names)):
-    print(classification_report(y_test.as_matrix()[:,i], y_pred[:,i]))
+        print(classification_report(Y_test.as_matrix()[:,i], Y_Pred[:,i]))
 
 
 def save_model(model, model_filepath):
