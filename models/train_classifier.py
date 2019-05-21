@@ -16,6 +16,8 @@ from sklearn.metrics import classification_report
 import pickle
 
 def load_data(database_filepath):
+	"""load the cleaned and merged database file from the input path"""
+    
     # load data from database
     engine = create_engine('sqlite:///'+database_filepath)
     df = pd.read_sql_table('DF', engine)
@@ -26,6 +28,7 @@ def load_data(database_filepath):
 
 
 def tokenize(text):
+	"""tokenizes and then lemmatizes the input text using nltk's wordtokenize and WordNetLemmatizer libraries"""
     tokens = word_tokenize(text)
     lemmatizer = WordNetLemmatizer()
 
@@ -38,26 +41,41 @@ def tokenize(text):
 
 
 def build_model():
+	"""Create a pipeline consisting of CountVectorizer Tfidf transformer and RandomForestClassifier. This function also runs GridSearch to optimize the model parameters"""
+
     #create the model pipeline with optimized variables
-    model = Pipeline([
-        ('vect', CountVectorizer(tokenizer=tokenize,max_df=0.75, max_features= 5000, ngram_range=(1,2))),
-        ('tfidf', TfidfTransformer(use_idf=True)),
+    pipeline = Pipeline([
+        ('vect', CountVectorizer(tokenizer=tokenize)),
+        ('tfidf', TfidfTransformer()),
         ('clf', MultiOutputClassifier(RandomForestClassifier(random_state=42)))
          ])
+
+
+    parameters = {
+        'vect__ngram_range': ((1, 1), (1, 2)),
+        'vect__max_df': (0.5, 0.75, 1.0),
+        'vect__max_features': (None, 500,1000,5000,7500,1000),
+        'tfidf__use_idf': (True, False)
+    }
+    model  = GridSearchCV(pipeline, param_grid=parameters,refit=True)
+
     return model
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
+	"""Evaluates model performance for every label for the given test data"""
     Y_Pred = model.predict(X_test)
     for i in range(len(category_names)):
         print(classification_report(Y_test.as_matrix()[:,i], Y_Pred[:,i]))
 
 
 def save_model(model, model_filepath):
+	"""Extracts and saves the model as a pickle file"""
     pickle.dump(model, open(model_filepath, 'wb'))
 
 
 def main():
+	"""This script loads the database and splits the inputs/outputs into test and train. Then creates a model and optimizes it. Prints the model performance for each output category and then saves the model as a pickle file"""
     if len(sys.argv) == 3:
         database_filepath, model_filepath = sys.argv[1:]
         print('Loading data...\n    DATABASE: {}'.format(database_filepath))

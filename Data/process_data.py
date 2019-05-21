@@ -4,6 +4,9 @@ import numpy as np
 from sqlalchemy import create_engine
 
 def load_data(messages_filepath, categories_filepath):
+
+	"""Loads the message and corresponding categories from given csv paths. Merges the files on common id's and returns a pandas dataframe"""
+
 	# load messages dataset
 	messages = pd.read_csv(messages_filepath)
 	# merge datasets
@@ -14,6 +17,10 @@ def load_data(messages_filepath, categories_filepath):
 
 
 def clean_data(df):
+
+	"""Creates a new dataframe from the categories column. Then parses a row of to create columns for categories. Next, extracts the value of each category and assigns to corresponding column.
+
+	Merges the new dataframe with the existing one. Removes the duplicate rows and outputs cleaned dataframe"""
 
 	##  Split categories into separate category columns.
 
@@ -61,12 +68,18 @@ def clean_data(df):
 
 
 def save_data(df, database_filename):
+	"""Saves database in sql format"""
 
 	engine = create_engine('sqlite:///'+database_filename)
 	df.to_sql('DF', engine, index=False)  
 
 
 def main():
+
+	"""Loads csv data for messages and corresponding categories
+	Cleans the category values and creates a column for each. Removes duplicate rows.
+	Saves the data as an sql database"""
+
 	if len(sys.argv) == 4:
 
 		messages_filepath, categories_filepath, database_filepath = sys.argv[1:]
