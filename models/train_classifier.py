@@ -50,7 +50,7 @@ def build_model():
     pipeline = Pipeline([
         ('vect', CountVectorizer(tokenizer=tokenize)),
         ('tfidf', TfidfTransformer()),
-        ('clf', MultiOutputClassifier(RandomForestClassifier(random_state=42)))
+        ('clf', MultiOutputClassifier(RandomForestClassifier(random_state=42,n_estimators=10)))
          ])
 
 
@@ -60,7 +60,7 @@ def build_model():
         'vect__max_features': (None,1000,2500,5000),
         'tfidf__use_idf': (True, False)
     }
-    model  = GridSearchCV(pipeline, param_grid=parameters,refit=True)
+    model  = GridSearchCV(pipeline, param_grid=parameters,refit=True,cv=3)
 
     return model
 

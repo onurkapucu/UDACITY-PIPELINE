@@ -52,7 +52,7 @@ A sample code to run train_classifier.py:
 
 **sklearn.model_selection:** Used GridSearchCV for pipeline parameter optimization
 
-**pickle:**: To save and reuse models
+**pickle:** To save and reuse models
 
 #### Model Pipeline: 
 
