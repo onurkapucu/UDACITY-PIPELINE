@@ -16,8 +16,7 @@ from sklearn.metrics import classification_report
 import pickle
 
 def load_data(database_filepath):
-	"""load the cleaned and merged database file from the input path"""
-    
+    """ Loads the saved database from the input path and returns target variables, feature variables and category names. """
     # load data from database
     engine = create_engine('sqlite:///'+database_filepath)
     df = pd.read_sql_table('DF', engine)
@@ -28,7 +27,8 @@ def load_data(database_filepath):
 
 
 def tokenize(text):
-	"""tokenizes and then lemmatizes the input text using nltk's wordtokenize and WordNetLemmatizer libraries"""
+    """ Tokenizes and lemmatizes the input text
+    returns lemmatized clean tokens"""
     tokens = word_tokenize(text)
     lemmatizer = WordNetLemmatizer()
 
@@ -41,8 +41,10 @@ def tokenize(text):
 
 
 def build_model():
-	"""Create a pipeline consisting of CountVectorizer Tfidf transformer and RandomForestClassifier. This function also runs GridSearch to optimize the model parameters"""
-
+    """ Builds a model pipeline consisting of vectorizer, transformer and classifier.
+    Returns a model that uses GridSearch on the created Pipeline
+    """
+    
     #create the model pipeline with optimized variables
     pipeline = Pipeline([
         ('vect', CountVectorizer(tokenizer=tokenize)),
@@ -63,19 +65,26 @@ def build_model():
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
-	"""Evaluates model performance for every label for the given test data"""
+    """ Evaluates the input model based on test feature and targets.
+    Inputs are model, target_test, feature_test and category names respectively"""
     Y_Pred = model.predict(X_test)
     for i in range(len(category_names)):
         print(classification_report(Y_test.as_matrix()[:,i], Y_Pred[:,i]))
 
 
 def save_model(model, model_filepath):
-	"""Extracts and saves the model as a pickle file"""
+    """Save the input model to the input filepath as a pickle file"""
     pickle.dump(model, open(model_filepath, 'wb'))
 
 
 def main():
-	"""This script loads the database and splits the inputs/outputs into test and train. Then creates a model and optimizes it. Prints the model performance for each output category and then saves the model as a pickle file"""
+    """ Loads database from the input path and then splits it into test and train datasets. 
+    Builds a model which consistst of a pipeline which is fed into GridSearch to be optimized.
+    Fits train data to the model and then evaluates the optimized model.
+    Finally saves the model to the model_filepath input given during function call.
+   
+   Inputs: database_filepath to read the saved sqlite database and model_filepath to save the optimized model
+    """
     if len(sys.argv) == 3:
         database_filepath, model_filepath = sys.argv[1:]
         print('Loading data...\n    DATABASE: {}'.format(database_filepath))
