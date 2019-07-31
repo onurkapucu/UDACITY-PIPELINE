@@ -19,7 +19,7 @@ You can find the data and a standalone python code, process_data.py, derived fro
 
 A sample code to run process_data.py:
 
-	python data/process_data.py data/disaster_messages.csv data/disaster_categories.csv data/DisasterResponse.db
+	python Data/process_data.py Data/messages.csv Data/categories.csv app/DisasterResponse.db
 
 
 ### 3- Models
@@ -28,7 +28,7 @@ You can find the standalone python code, train_classifier.py, derived from ML Pi
 
 A sample code to run train_classifier.py:
 
-	python models/train_classifier.py data/DisasterResponse.db models/classifier.pkl
+	python models/train_classifier.py app/DisasterResponse.db models/classifier.pkl
 
 #### Libraries:
 
