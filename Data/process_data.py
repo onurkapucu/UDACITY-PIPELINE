@@ -65,7 +65,7 @@ def save_data(df, database_filename):
     Inputs are cleaned dataframe and address of where database file will be saved.
     """
     engine = create_engine('sqlite:///'+database_filename)
-    df.to_sql('DF', engine, index=False)  
+    df.to_sql('Messages', engine, index=False)  
 
 def main():
     """ This module
