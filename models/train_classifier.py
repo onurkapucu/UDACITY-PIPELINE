@@ -20,7 +20,7 @@ def load_data(database_filepath):
     """ Loads the saved database from the input path and returns target variables, feature variables and category names. """
     # load data from database
     engine = create_engine('sqlite:///'+database_filepath)
-    df = pd.read_sql_table('DF', engine)
+    df = pd.read_sql_table('Messages', engine)
     X = df['message']
     Y = df.drop(columns=['id','message','original','genre'])
     category_names=list(Y)
