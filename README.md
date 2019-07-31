@@ -1,6 +1,6 @@
 # UDACITY-PIPELINE
 
-This project aims to create a pipeline to classify text inputs into 36 categories to better respond disaster/critical situation messages.
+This project aims to create a pipeline to classify text inputs into different categories to better respond disaster/critical situation messages.
 
 ## Content
 
