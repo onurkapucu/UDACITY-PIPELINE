@@ -77,3 +77,7 @@ This pipeline is then optimized using GridSearch for following parameter values:
 #### 4- App
 
 This folder contains a web app that can be run using run.py. By default it will display the distribution of database message genres. Also allows to test and classify random inputs.
+
+You can run the web app simply by calling the run.py function under app folder. Web app will be hosted on http://0.0.0.0:3001 or http://localhost:3001 
+
+On the opening page you will see Message Genre distribution and Top 10 categories for our Database. You can also enter a message of your own on top and classify it based on our trained classifier model.
