@@ -13,6 +13,7 @@ from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
+from sklearn.model_selection import GridSearchCV
 import pickle
 
 def load_data(database_filepath):
@@ -55,8 +56,8 @@ def build_model():
 
     parameters = {
         'vect__ngram_range': ((1, 1), (1, 2)),
-        'vect__max_df': (0.5, 0.75, 1.0),
-        'vect__max_features': (None, 500,1000,5000,7500,1000),
+        'vect__max_df': (0.5, 1.0),
+        'vect__max_features': (None,1000,2500,5000),
         'tfidf__use_idf': (True, False)
     }
     model  = GridSearchCV(pipeline, param_grid=parameters,refit=True)
