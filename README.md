@@ -28,6 +28,20 @@ A sample code to run train_classifier.py:
 
 `python models/train_classifier.py data/DisasterResponse.db models/classifier.pkl`
 
+I used GridSearch to optimize my model pipeline among following parameters:
+
+parameters = {
+
+        'vect__ngram_range': ((1, 1), (1, 2)),
+
+        'vect__max_df': (0.5, 0.75, 1.0),
+
+        'vect__max_features': (None, 500,1000,5000,7500,1000),
+
+        'tfidf__use_idf': (True, False)
+        
+    }
+
 #### 4- app
 
 This folder contains a web app that can be run using run.py. By default it will display the distribution of database message genres. Also allows to test and classify random inputs.
